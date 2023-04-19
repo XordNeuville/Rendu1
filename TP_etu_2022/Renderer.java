@@ -22,9 +22,9 @@ public class Renderer {
         mesh = new Mesh (scene.getMeshFileName());
         screen = new GraphicsWrapper (scene.getScreenW (), scene.getScreenH ());
         screen.clearBuffer ();
-        shader = new SimpleShader (screen);
-        //shader = new PainterShader (screen);
-        //rasterizer = new PerspectiveCorrectRasterizer (shader);
+        // shader = new SimpleShader (screen);
+        shader = new PainterShader (screen);
+        // rasterizer = new PerspectiveCorrectRasterizer (shader);
         rasterizer = new Rasterizer (shader);
 
         xform = new Transformation ();
@@ -147,11 +147,11 @@ public class Renderer {
         wait (3);
 
         /* solid rendering, no lighting */
-        /*screen.clearBuffer ();
+        screen.clearBuffer ();
         shader.reset ();
         renderSolid ();
         screen.swapBuffers ();
-        wait (3);*/
+        wait (3);
 
         /* solid rendering, with lighting */
         /*screen.clearBuffer ();

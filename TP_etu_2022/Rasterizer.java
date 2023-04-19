@@ -186,6 +186,24 @@ public class Rasterizer {
     }
 
     /**
+     * Linear interpolation of a Fragment f on the edge defined by Fragment's v1, v2
+     * and
+     * v3
+     */
+    private void interpolate3(Fragment v1, Fragment v2, Fragment v3, Fragment f, Vector p) {
+        int numAttributes = f.getNumAttributes();
+        // Normaliser p
+        double k = p.get(0) + p.get(1) + p.get(2);
+        double alpha = p.get(0) / k;
+        double beta = p.get(1) / k;
+        double gamma = p.get(2) / k;
+
+        for (int i = 0; i < numAttributes; i++) {
+            f.setAttribute(i, alpha * v1.getAttribute(i) + beta * v2.getAttribute(i) + gamma * v3.getAttribute(i));
+        }
+    }
+
+    /**
      * Rasterizes the triangular face made of the Fragment v1, v2 and v3
      */
     public void rasterizeFace(Fragment v1, Fragment v2, Fragment v3) {
@@ -194,7 +212,45 @@ public class Rasterizer {
 
         /* iterate over the triangle's bounding box */
 
-        /* A COMPLETER */
+        /* Coordinates of V1 and V2 */
+        int x1 = v1.getX();
+        int y1 = v1.getY();
+        int x2 = v2.getX();
+        int y2 = v2.getY();
+        int x3 = v3.getX();
+        int y3 = v3.getY();
 
+        /* Trouver la boundig box du triangle */
+        int xmin = Math.min(x1, Math.min(x2, x3));
+        int xmax = Math.max(x1, Math.max(x2, x3));
+        int ymin = Math.min(y1, Math.min(y2, y3));
+        int ymax = Math.max(y1, Math.max(y2, y3));
+
+        try {
+            for (int i = 0; i < xmax - xmin; i++) {
+                for (int j = 0; j < ymax - ymin; j++) {
+                    Vector p;
+                    Fragment fragment = new Fragment(0, 0); // , numAttributes);
+
+                    p = new Vector(3);
+                    p.set(0, 1);
+                    p.set(1, xmin + i);
+                    p.set(2, ymin + j);
+                    p = C.multiply(p);
+                    if (p.get(0) >= 0 && p.get(1) >= 0 && p.get(2) >= 0) {
+                        fragment.setPosition(xmin + i, ymin + j);
+                        interpolate3(v1, v2, v3, fragment, p);
+                    }
+
+                    // envoi du fragment au shader
+                    if (!shader.isClipped(fragment)) {
+                        shader.shade(fragment);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 }
