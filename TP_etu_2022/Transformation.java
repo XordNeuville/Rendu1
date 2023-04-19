@@ -113,12 +113,9 @@ public class Transformation {
             throws SizeMismatchException, InstantiationException {
         Vector ps = new Vector(3);
 
-        p = p.dot(worldToCamera); // A FAIRE
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 4; j++) {
-                ps.set(i, ps.get(i) + projection.get(i, j) * p.get(j));
-            }
-        }
+        Vector p1 = worldToCamera.multiply(p);
+        Vector p2 = projection.multiply(p1);
+        ps = calibration.multiply(p2);
 
         ps.set(0, ps.get(0)/ps.get(2));
         ps.set(1, ps.get(1)/ps.get(2));
