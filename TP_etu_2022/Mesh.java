@@ -122,7 +122,21 @@ public class Mesh {
 
                 /* A COMPLETER */
 
-                Vector3 n = new Vector3(); // ?
+                Vector3 n = new Vector3();
+                Vector3 v1 = new Vector3(vertices[faces[i+1]]);
+                Vector3 v2 = new Vector3(vertices[faces[i]]);
+                Vector3 v3 = new Vector3(vertices[faces[i + 2]]);
+
+                // La normale en un sommet est obtenue comme la moyenne des normales des faces auxquelles appartient le somme
+                
+
+                Vector3 v12 = v2;
+                v12.subtract(v1);
+                v12.normalize();
+                Vector3 v13 = v3;
+                v13.subtract(v1);
+                v13.normalize();
+                n = v13.cross(v12);
 
                 // ajoute la normale calculee a chq sommet de la face
                 for (int j = 0; j < 3; j++) {

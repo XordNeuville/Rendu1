@@ -76,8 +76,6 @@ public class Transformation {
         } catch (Exception e) {
             /* unreached */ }
         ;
-
-        System.out.println("Modelview matrix:\n" + worldToCamera);
     }
 
     public void setProjection() {
@@ -91,8 +89,6 @@ public class Transformation {
                 }
             }
         }
-
-        System.out.println("Projection matrix:\n" + projection);
     }
 
     public void setCalibration(double focal, double width, double height) {
@@ -100,8 +96,6 @@ public class Transformation {
         calibration.set(1, 1, focal);
         calibration.set(0, 2, width / 2);
         calibration.set(1, 2, height / 2);
-
-        System.out.println("Calibration matrix:\n" + calibration);
     }
 
     /**

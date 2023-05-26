@@ -26,11 +26,11 @@ public class Texture {
      * u and v and wrapped around to [0,1].
      */ 
     public Color sample (double u, double v) {
-
-
-	/* A COMPLETER */
-
-
-        return new Color (0,0,0);
+        double u1 = (u * width) % width;
+        double v1 = (v * height) % height;
+        Color c = new Color (image.getRGB ((int)u1, (int)v1));
+        
+        return c;
+        
     }
 }
